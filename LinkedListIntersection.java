@@ -25,7 +25,7 @@ public class LinkedListIntersection {
 
     public ListNode getIntersectionNode1(ListNode headA, ListNode headB) {
 
-        ListNode n1=headA,n2=headB;
+        ListNode n1 = headA, n2 = headB;
 
         Set<ListNode> hs = new HashSet<ListNode>();
         //Adding all nodes of headA
@@ -51,12 +51,12 @@ public class LinkedListIntersection {
 
         ListNode currA = headA;
 
-        while (currA != null){
+        while (currA != null) {
             ListNode currB = headB;
-            while (currB != null){
-                if (currA == currB){
+            while (currB != null) {
+                if (currA == currB) {
                     return currA;
-                }else{
+                } else {
                     currB = currB.next;
                 }
             }
@@ -86,6 +86,53 @@ public class LinkedListIntersection {
         }
         return ptrA;
 
+    }
+
+    //Approach 4: Using two pinter approach. Calculate the length of the lists and then move the pointer of the larger
+    //one to the difference of lengths. Then start traversing the lists, if end is reached, that means both have same
+    // nodes at end 
+
+    public static ListNode getIntersectionNode4(ListNode headA, ListNode headB) {
+
+        int sizeA = 0;
+        int sizeB = 0;
+
+        //calculate size of 1st list
+        ListNode nodeA = headA;
+        while (nodeA != null) {
+            sizeA++;
+            nodeA = nodeA.next;
+        }
+
+        //calculate size of 2nd list
+        ListNode nodeB = headB;
+        while (nodeB != null) {
+            sizeB++;
+            nodeB = nodeB.next;
+        }
+
+        //move to the node such that both lists are of same size from that node to end
+        if (sizeA > sizeB) {
+            int i = 0;
+            while (i < sizeA - sizeB) {
+                headA = headA.next;
+                i++;
+            }
+        } else if (sizeB > sizeA) {
+            int i = 0;
+            while (i < sizeB - sizeA) {
+                headB = headB.next;
+                i++;
+            }
+        }
+
+        //traverse both the lists together until they are equal or the end is reached
+        while (headA != headB) {
+            if (headA == null || headB == null) return null;
+            headA = headA.next;
+            headB = headB.next;
+        }
+        return headA;
     }
 
     public static void main(String[] args) {
